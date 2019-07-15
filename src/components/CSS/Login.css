@@ -1,0 +1,87 @@
+.loginPageGrid {
+  display: grid;
+  grid-template-columns: 1fr 350px 1fr;
+  grid-template-rows: 1fr 600px 1fr;
+  grid-template-areas: 
+    ". . ."
+    ". form ."
+    ". . .";
+}
+
+.loginForm {
+  grid-area: form;
+  align-content: center;
+  display: grid;
+  grid-template-rows: repeat(10, 1fr);
+
+}
+
+.spaceGrid {
+  min-height: 100px;
+}
+
+input {
+  border: none;
+}
+
+.blueLetters {
+  color: #194CBF;
+  text-align: center;
+  font-size: 40px;
+}
+
+textarea:focus, input:focus{
+  outline: none;
+}
+
+.formElement {
+  border: none;
+  border-bottom: solid;
+  border-color: lightgray;
+  color: black;
+  font-size: 20px;
+  border-width: 2px;
+}
+
+.blueButton {
+  background-color: #68A5FB;
+  color: white;
+  font-size: 20px;
+  border-radius: 8px;
+  text-align: center;
+  border: none;
+}
+
+.blueLink {
+  color: dodgerblue;
+  font-size: 30px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.loginMessage {
+  text-align: center;
+  font-size: 17px;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: lightgray;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: lightgray;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: lightgray;
+}
+
+.alignCenter {
+  text-align: center;
+  justify-items: center;
+}
+
+.adjustSize20 {
+  font-size: 20px;
+}
