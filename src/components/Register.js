@@ -1,67 +1,69 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { useSessionStorage } from 'react-use';
-import './CSS/Login.css';
+import styles from './Login.module.css';
+import { useSetState } from 'react-use';
+import { userRequest } from '../services/userAPI';
 
-export function Register() {
-  const [nameRegister, setRegisterName] = useSessionStorage('nameRegister', '');
-  const [emailRegister, setRegisterEmail] = useSessionStorage('emailRegister', '');
-  const [passwordRegister, setRegisterPassword] = useSessionStorage('passwordRegister', '');
-  const [confirmPasswordRegister, setRegisterConfirmPassword] = useSessionStorage('passwordRegister', '');
-  const [registerMessage, setRegisterMessage] = useSessionStorage('registerMessage', '');
+export function Register(props) {
 
-  
+  const [state, setState] = useSetState({
+    fname: '',
+    lname: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    registerMessage: '',
+  });
 
-
-  function onEmailRegisterInputChange(e) {
-    setRegisterEmail(e.target.value);
+  function onInputChange(fieldName) {
+    return (e) => {
+      setState({
+        [fieldName]: e.target.value,
+      });
+    };
   }
 
-  function onPasswordRegisterInputChange(e) {
-    setRegisterPassword(e.target.value);
-  }
+  async function onRegisterSubmit(e) {
+    e.preventDefault();
 
-  function onConfirmPasswordRegisterInputChange(e) {
-    setRegisterConfirmPassword(e.target.value);
-  }
+    setState({ registerMessage: "" });
+    if (state.fname.trim().length === 0 || state.lname.trim().length === 0) {
+      setState({ registerMessage: "Must input full name!" });
 
-  function onNameRegisterInputChange(e) {
-    setRegisterName(e.target.value);
-  }
+    } else if (!state.email.match("[^@]+@[^.]+..+")) {
+      setState({ registerMessage: "Must input valid Email!" });
 
-  async function checkRegister(e) {
-    setRegisterMessage("");
-    if(nameRegister.trim().length === 0) {
-      setRegisterMessage("Must input first name!");
-    } else if(!emailRegister.match("[^@]+@[^\.]+\..+")) {
-      setRegisterMessage("Invalid E-Mail");
-    } else if(passwordRegister.length < 5) {
-      setRegisterMessage("Password must contain atleast 5 characters.");
-      
-    } else if(passwordRegister != confirmPasswordRegister) {
-      setRegisterMessage("Passwords must match");
-    }else {
-      if(false) {
-        setRegisterMessage("Something went wrong while registering user...");
+    } else if (state.password.trim().length === 0) {
+      setState({ registerMessage: "Must input password!" });
+
+    } else if (state.password !== state.confirmPassword) {
+      setState({ registerMessage: "The passwords must match!" });
+
+    } else {
+      const newUser = await userRequest('POST', state.email, state.fname, state.lname, state.password);
+      if (!newUser.user.id) {
+        setState({ registerMessage: "This Email is already used." });
       } else {
-        document.location.href = "/";
+        setState({ registerMessage: "Registration was successful, please login to view flights." });
+        props.history.push('/login');
       }
     }
   }
 
   return (
-    <div className="loginPageGrid">
-      <div className="spaceGrid"></div>
-      <div className="loginForm">
-        <div className="blueLetters">Register</div>
+    <div className={styles.loginPageGrid}>
+      <div className={styles.spaceGrid}></div>
+      <div className={styles.loginForm}>
+        <div className={styles.blueLetters}>Register</div>
         <div></div>
-        <input type="text" className="formElement" value={nameRegister} placeholder="Username" onChange={onNameRegisterInputChange} />
-        <input type="email" className="formElement" value={emailRegister} placeholder="Email" onChange={onEmailRegisterInputChange} />
-        <input type="password" className="formElement" value={passwordRegister} placeholder="Password" onChange={onPasswordRegisterInputChange} />
-        <input type="password" className="formElement" value={confirmPasswordRegister} 
-              placeholder="Confirm Password" onChange={onConfirmPasswordRegisterInputChange} />
-        <div className="loginMessage">{registerMessage}</div>
-        <button className="blueButton" onClick={checkRegister}>Register</button>
+        <form onSubmit={onRegisterSubmit}>
+          <input type="text" className="{styles.formElement}" placeholder="First Name" value={state.fname} onChange={onInputChange('fname')} />
+          <input type="text" className="{styles.formElement}" placeholder="Last Name" value={state.lname} onChange={onInputChange('lname')} />
+          <input type="email" className="{styles.formElement}" placeholder="Email" value={state.email} onChange={onInputChange('email')} />
+          <input type="password" className="{styles.formElement}" placeholder="Password" value={state.password} onChange={onInputChange('password')} />
+          <input type="password" className="{styles.formElement}" placeholder="Confirm Password" value={state.confirmPassword} onChange={onInputChange('confirmPassword')} />
+          <div className={styles.loginMessage}>{state.registerMessage}</div>
+          <input className={styles.blueButton} type="submit" value="Register" />
+        </form>
       </div>
     </div>
   );

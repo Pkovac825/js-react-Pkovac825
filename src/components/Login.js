@@ -1,67 +1,91 @@
 import React from 'react';
-import { useLocalStorage } from 'react-use';
-import { useSessionStorage } from 'react-use';
-import './CSS/Login.css';
-
-export function Login() {
-  const [userToken, setToken] = useSessionStorage('userToken', '');
-  const [username, setUsername] = useLocalStorage('username', '');
-  const [password, setPassword] = useLocalStorage('password', '');
-  const [loginMessage, setLoginMessage] = useSessionStorage('loginMessage', '');
-  const [rememberYou, shouldIRemember] = useLocalStorage('remember', false);
+import styles from './Login.module.css';
+import { userState } from '../state/UserState';
+import { useSetState } from 'react-use';
+import { sessionRequest } from '../services/sessionAPI';
+import { Link } from 'react-router-dom';
+import { observer } from 'mobx-react';
 
 
 
-  function onUsernameInputChange(e) {
-    setUsername(e.target.value);
+function LoginComponent(props) {
+  const { history } = props;
+  const [state, setState] = useSetState({
+    loginMessage: '',
+    email: userState.email || '',
+    password: userState.password || '',
+    rememberYou: userState.rememberMe || '',
+  });
+
+  function onInputChange(fieldName) {
+    return (e) => {
+      setState({
+        [fieldName]: e.target.value,
+      });
+    };
   }
 
-  function onPasswordInputChange(e) {
-    setPassword(e.target.value);
+  function changeRememberance(e) {
+    setState({ rememberYou: e.target.checked });
   }
 
   async function checkLogin(e) {
-    setLoginMessage("");
-    if (username.length === 0) {
-      setLoginMessage("Invalid username");
-    } else if (password.length === 0) {
-      setLoginMessage("Must input password");
+    e.preventDefault();
+    setState({ loginMessage: "" });
+
+    if (!state.email.match("[^@]+@[^.]+..+")) {
+      setState({ loginMessage: "Invalid email" });
+    } else if (state.password.trim().length === 0) {
+
+      setState({ loginMessage: "Must input password" });
     } else {
-      if (false) {
-        setLoginMessage("The username or password is incorrect.");
+
+      const newSession = await sessionRequest('POST', state.email, state.password);
+      if (!newSession.session) {
+        setState({ loginMessage: "The Email or Password is incorrect." });
       } else {
-        setToken("token");
-        document.location.href = "/";
+        userState.rememberMe = state.rememberYou;
+        userState.email = state.email;
+        userState.password = state.password;
+        userState.userToken = newSession.session.token;
+        history.push('/');
       }
-      setUsername(rememberYou ? username : '');
-      setPassword(rememberYou ? password : '');
     }
   }
 
 
-  function changeRememberance(e) {
-    shouldIRemember(e.target.checked);
-  }
-
   return (
+    <div>
+      {
+        userState.userToken ?
 
-    <div className="loginPageGrid">
-      <div className="spaceGrid"></div>
-      <div className="loginForm">
-        <div className="blueLetters">Login</div>
-        <div></div>
-        <input type="text" className="formElement" value={username} placeholder="Username" onChange={onUsernameInputChange} />
-        <input type="password" className="formElement" value={password} placeholder="Password" onChange={onPasswordInputChange} />
-        <div className="loginMessage">{loginMessage}</div>
-        <span className="alignCenter adjustSize20"><input type="checkbox" checked={rememberYou} onChange={changeRememberance} />&nbsp;&nbsp;Remember Me</span>
-        <button className="blueButton" onClick={checkLogin}>Login</button>
-        <div></div>
-        <h5 className="alignCenter">Don't have an account?</h5>
-        <a href="/register" className="blueLink alignCenter">Register here</a>
-      </div>
-    </div >
+          <div>
+            <h1>You are already logged in</h1>
+            <Link to="/">Go back to main page.</Link>
+          </div>
+          :
+          <div className={styles.loginPageGrid}>
+            <div className={styles.spaceGrid}></div>
+            <div className={styles.loginForm}>
+              <div className={styles.blueLetters}>Login</div>
+              <div></div>
+              <form onSubmit={checkLogin}>
+                <input type="email" className="{styles.formElement}" placeholder="Email" value={state.email} onChange={onInputChange('email')} />
+                <input type="password" className="{styles.formElement}" placeholder="Password" value={state.password} onChange={onInputChange('password')} />
+                <div className={styles.loginMessage}>{state.loginMessage}</div>
+                <span className={styles.alignCenter}><input type="checkbox"  onChange={changeRememberance} />&nbsp;&nbsp;Remember Me</span>
+                <input className={styles.blueButton} type="submit" value="Login" />
+                <h5 className={styles.alignCenter}>Don't have an account?</h5>
+                <a href="/register" className={styles.blueLink}><div className={styles.alignCenter}>Register here</div></a>
+              </form>
+            </div>
+          </div >
+      }
+    </div>
   );
 }
+
+export const Login = observer(LoginComponent);
 
 
 

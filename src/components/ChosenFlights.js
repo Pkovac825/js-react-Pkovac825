@@ -1,112 +1,95 @@
 import React from 'react';
-import './CSS/Landing.css';
-import { useSessionStorage } from 'react-use';
-import './CSS/Buttons.css';
+import styles from './Landing.module.css';
+import { observer } from 'mobx-react';
+import { userState } from '../state/UserState';
+import { Link } from 'react-router-dom';
 
-export function ChosenFlights(props) {
-  const { flightsJSON } = props;
-  console.log(sessionStorage.getItem('userToken'));
+function LandingComponent(props) {
+  const { responseFlights } = props;
 
+  function logout() {
+    userState.userToken = '';
+  }
+  
   return (
 
-    <div className="pageGrid">
-      <div className="header">
-        {sessionStorage.getItem('userToken') ?
+    <div className={styles.pageGrid}>
+      <div className={styles.header}>
+        {userState.userToken ?
           <div>
-            <a href="/"><button className="headerButton" onClick={logout}>Logout</button></a>
+            <a href="/"><button className={styles.headerButton} onClick={logout}>Logout</button></a>
           </div>
           :
           <div>
-            <a href="/login"><button className="headerButton">Login</button></a>
-            <a href="/register"><button className="headerButton">Register</button></a>
+            <a href="/login"><button className={styles.headerButton}>Login</button></a>
+            <a href="/register"><button className={styles.headerButton}>Register</button></a>
           </div>
         }
       </div>
 
 
-      <div className="search">
-        <div className="searchText">
+      <div className={styles.search}>
+        <div className={styles.searchText}>
           Find the best flights for you and your friends!
         </div>
 
-        <div className="searchButtonsArea">
-          <div className="dropdown">
-            <button onClick={drop} className="dropbtn alignLeft" id="date">01. FEB 2019.</button>
-            <div id="dateDropdown" className="dropdown-content">
-              <p>02. FEB 2019.</p>
-              <p>03. FEB 2019.</p>
-              <p>04. FEB 2019.</p>
-              <p>05. FEB 2019.</p>
-            </div>
-          </div>
+        <div className={styles.searchButtonsArea}>
+          <select className={styles.dropbtn} name="date" defaultValue="defOpt">
+            <option className={styles.dropdownContent} value="defOpt" disabled hidden>Choose the date!</option>
+            <option className={styles.dropdownContent} value="">Now!</option>
+            <option className={styles.dropdownContent} value="">Never!</option>
+            <option className={styles.dropdownContent} value="">The third Sol of the autumn.</option>
+          </select>
 
-          <div className="dropdown">
-            <button onClick={drop} className="dropbtn alignLeft" id="city">AMSTERDAM</button>
-            <div id="cityDropdown" className="dropdown-content">
-              <p>ZAGREB</p>
-              <p>BERLIN</p>
-              <p>ROME</p>
-              <p>LONDON</p>
-            </div>
-          </div>
+          <select className={styles.dropbtn} name="city" defaultValue="defOpt">
+            <option className={styles.dropdownContent} value="defOpt" disabled hidden>Choose the location!</option>
+            <option className={styles.dropdownContent} value="">bish</option>
+            <option className={styles.dropdownContent} value="">bash</option>
+            <option className={styles.dropdownContent} value="">bosh</option>
+          </select>
 
-          <div className="dropdown">
-            <button onClick={drop} className="dropbtn alignLeft" id="passengerNumber">4 PEOPLE</button>
-            <div id="passengerNumberDropdown" className="dropdown-content">
-              <p>1 PERSON</p>
-              <p>2 PEOPLE</p>
-              <p>3 PEOPLE</p>
-            </div>
-          </div>
-          <button className="searchButton">SEARCH</button>
+          <select className={styles.dropbtn} name="people" defaultValue="defOpt">
+            <option className={styles.dropdownContent} value="defOpt" disabled hidden>Choose the number of people!</option>
+            <option className={styles.dropdownContent} value="">1 Person</option>
+            <option className={styles.dropdownContent} value="">2 Guys</option>
+            <option className={styles.dropdownContent} value="">3 Pals</option>
+          </select>
+
+
+
+          <button className={styles.searchButton}>SEARCH</button>
         </div>
       </div>
 
 
 
-      <div className="main">
-        <div className="toptext">
+      <div className={styles.main}>
+        <div className={styles.toptext}>
           RESULTS
         </div>
-        <div className="flightInfo">
+        <div className={styles.flightInfo}>
 
           {
-            flightsJSON && flightsJSON.flights && flightsJSON.flights.map((flight) => (
-              <div className="oneFlightInfo" key={flight.id}>
-                <div className="alignRight">
-                  <div className="dropdown">
-                    <button onClick={drop} className="dropbtn alignRight" id={flight.id + "dots"}>&#8942;</button>
-                    <div id={flight.id + "dotsDropdown"} className="dropdown-content alignRight">
-                      <p className="alignCenter">Book</p>
-                      <p className="alignCenter">Add to wishlist</p>
-                    </div>
-                  </div>
-                </div>
-                <img src="http://placecorgi.com/400/300" width="400" height="350" />
-                <div className="desc">
+            responseFlights.map((flight) => (
+
+              <div className={styles.oneFlightInfo} key={flight.id}>
+                <select className={styles.alignRight} name="booking" defaultValue="defOpt">
+                  <option className={styles.threeDots} value="defOpt" disabled hidden>&#8942;</option>
+                  <option value={flight.id}>Book</option>
+                  <option value={flight.id}>Add to wishlist</option>
+                </select>
+                <Link to={"/book?" + flight.id}><img src="http://placecorgi.com/400/300" width="400" height="350" alt="That's a pretty sweet Corgi." /></Link>
+                <div className={styles.desc}>
                   <h4>Departs at {flight.flys_at.split("T")[1].substring(0, 5)}</h4>
                   <p>{flight.company_name}</p>
-                  <p ><span className="star">&#9733;&#9733;&#9733;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    <span className="grayLetters">|&nbsp;&nbsp;&nbsp;&nbsp;{flight.no_of_seats} tickets available</span></p>
-                  <p>Price <span className="money">&nbsp;&nbsp;{flight.base_price}$</span> </p>
+                  <p ><span className={styles.star}>&#9733;&#9733;&#9733;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span className={styles.grayLetters}>|&nbsp;&nbsp;&nbsp;&nbsp;{flight.no_of_seats} tickets available</span></p>
+                  <p>Price <span className={styles.money}>&nbsp;&nbsp;{flight.base_price}$</span> </p>
                 </div>
               </div>
 
             ))
           }
-          
-          <div className="oneFlightInfo"></div>
-          <div className="oneFlightInfo"></div>
-          <div className="oneFlightInfo"></div>
-          <div className="oneFlightInfo"></div>
-          <div className="oneFlightInfo"></div>
-          <div className="oneFlightInfo"></div>
-          <div className="oneFlightInfo"></div>
-          <div className="oneFlightInfo"></div>
-          <div className="oneFlightInfo"></div>
-          <div className="oneFlightInfo"></div>
-          <div className="oneFlightInfo"></div>
-          <div className="oneFlightInfo"></div>
 
         </div>
       </div>
@@ -114,23 +97,5 @@ export function ChosenFlights(props) {
   );
 }
 
-function logout() {
-  sessionStorage.removeItem('userToken', null);
-  sessionStorage.removeItem('loginMessage')
-}
+export const ChosenFlights = observer(LandingComponent);
 
-function drop(e) {
-  document.getElementById(e.target.id + "Dropdown").classList.toggle("show");
-}
-
-window.onclick = function (event) {
-  const drpID = event.target.id ? event.target.id + "Dropdown" : "";
-  var dropdowns = document.getElementsByClassName("dropdown-content");
-  var i;
-  for (i = 0; i < dropdowns.length; i++) {
-    var openDropdown = dropdowns[i];
-    if (openDropdown.classList.contains('show') && (openDropdown.id != drpID)) {
-      openDropdown.classList.remove('show');
-    }
-  }
-}
