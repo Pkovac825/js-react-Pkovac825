@@ -1,7 +1,11 @@
-import { get } from './flightsAPI';
+import { get } from './api';
 
 export function loadFlights(appState, serverToken) {
   if(!serverToken) return;
+  if(appState.flights.length) {
+    return Promise.resolve(appState.flights);
+  }
+  
     const optionsFlight = {
         method: 'GET',
         headers: {

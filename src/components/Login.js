@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './Login.module.css';
-import { userState } from '../state/UserState';
 import { useSetState } from 'react-use';
 import { sessionRequest } from '../services/sessionAPI';
 import { Link } from 'react-router-dom';
@@ -8,13 +7,14 @@ import { observer } from 'mobx-react';
 
 
 
-function LoginComponent(props) {
+function Login(props) {
   const { history } = props;
+  const { appState } = props;
   const [state, setState] = useSetState({
     loginMessage: '',
-    email: userState.email || '',
-    password: userState.password || '',
-    rememberYou: userState.rememberMe || '',
+    email: appState.email || '',
+    password: appState.password || '',
+    rememberYou: appState.rememberMe || '',
   });
 
   function onInputChange(fieldName) {
@@ -44,10 +44,10 @@ function LoginComponent(props) {
       if (!newSession.session) {
         setState({ loginMessage: "The Email or Password is incorrect." });
       } else {
-        userState.rememberMe = state.rememberYou;
-        userState.email = state.email;
-        userState.password = state.password;
-        userState.userToken = newSession.session.token;
+        appState.rememberMe = state.rememberYou;
+        appState.email = state.email;
+        appState.password = state.password;
+        appState.userToken = newSession.session.token;
         history.push('/');
       }
     }
@@ -57,7 +57,7 @@ function LoginComponent(props) {
   return (
     <div>
       {
-        userState.userToken ?
+        appState.userToken ?
 
           <div>
             <h1>You are already logged in</h1>
@@ -73,7 +73,7 @@ function LoginComponent(props) {
                 <input type="email" className="{styles.formElement}" placeholder="Email" value={state.email} onChange={onInputChange('email')} />
                 <input type="password" className="{styles.formElement}" placeholder="Password" value={state.password} onChange={onInputChange('password')} />
                 <div className={styles.loginMessage}>{state.loginMessage}</div>
-                <span className={styles.alignCenter}><input type="checkbox"  onChange={changeRememberance} />&nbsp;&nbsp;Remember Me</span>
+                <span className={styles.alignCenter}><input type="checkbox" onChange={changeRememberance} />&nbsp;&nbsp;Remember Me</span>
                 <input className={styles.blueButton} type="submit" value="Login" />
                 <h5 className={styles.alignCenter}>Don't have an account?</h5>
                 <a href="/register" className={styles.blueLink}><div className={styles.alignCenter}>Register here</div></a>
@@ -85,7 +85,7 @@ function LoginComponent(props) {
   );
 }
 
-export const Login = observer(LoginComponent);
+export const LoginComponent = observer(Login);
 
 
 

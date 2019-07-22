@@ -1,10 +1,9 @@
 import React from 'react';
-import styles from './Login.module.css';
+import styles from './Register.module.css';
 import { useSetState } from 'react-use';
 import { userRequest } from '../services/userAPI';
 
 export function Register(props) {
-
   const [state, setState] = useSetState({
     fname: '',
     lname: '',

@@ -1,4 +1,4 @@
-import { get } from './flightsAPI';
+import { get } from './api';
 
 export function sessionRequest(method, email, password) {
     const optionsSession = {

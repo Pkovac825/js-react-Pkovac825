@@ -1,4 +1,4 @@
-import { get } from './flightsAPI';
+import { get } from './api';
 
 export function userRequest(method, email, fname, lname, password) {
     const optionsUser = {
