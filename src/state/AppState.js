@@ -4,10 +4,11 @@ class AppState {
   flights = [];
   queriedID = '';
   userToken = sessionStorage.getItem('userToken', '') || '';
-  email = localStorage.getItem("email", '') || '';
-  password =localStorage.getItem("password", '') || '';
-  rememberMe = localStorage.getItem("rememberMe", false) || '';
-  bookings = [];
+  user = {
+    email: localStorage.getItem("email", '') || '',
+    rememberMe: localStorage.getItem("rememberMe", false) || '',
+    bookings: [],
+  }
 
   get getFlightById() {
     return this.flights.filter((flight) => flight.id == this.queriedID);
@@ -20,19 +21,15 @@ decorate(AppState, {
   queriedID: observable,
   getFlightById: computed,
   userToken: observable,
-  email: observable,
-  password: observable,
-  rememberMe: observable,
-  bookings: observable,
+  user: observable,
 });
 
 export const appState = new AppState();
 
 
 autorun(() => {
-  localStorage.setItem('rememberMe', appState.rememberMe);
-  localStorage.setItem('email', appState.rememberMe ? appState.email : '');
-  localStorage.setItem('password', appState.rememberMe ? appState.password : '');
+  localStorage.setItem('rememberMe', appState.user.rememberMe);
+  localStorage.setItem('email', appState.user.rememberMe ? appState.user.email : '');
   sessionStorage.setItem('userToken', appState.userToken);
 });
 

@@ -1,58 +1,26 @@
 import React from 'react';
 import styles from './Login.module.css';
 import { useSetState } from 'react-use';
-import { sessionRequest } from '../services/sessionAPI';
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react';
-
-
+import useForm from 'react-hook-form';
 
 function Login(props) {
-  const { history } = props;
-  const { appState } = props;
+  const { register, handleSubmit, errors, setError } = useForm();
+  const { checkLogin, appState } = props;
   const [state, setState] = useSetState({
-    loginMessage: '',
-    email: appState.email || '',
-    password: appState.password || '',
-    rememberYou: appState.rememberMe || '',
+    rememberMe: appState.user.rememberMe || '',
   });
 
-  function onInputChange(fieldName) {
-    return (e) => {
-      setState({
-        [fieldName]: e.target.value,
-      });
-    };
-  }
-
   function changeRememberance(e) {
-    setState({ rememberYou: e.target.checked });
+    setState({ rememberMe: e.target.checked });
   }
 
-  async function checkLogin(e) {
-    e.preventDefault();
-    setState({ loginMessage: "" });
-
-    if (!state.email.match("[^@]+@[^.]+..+")) {
-      setState({ loginMessage: "Invalid email" });
-    } else if (state.password.trim().length === 0) {
-
-      setState({ loginMessage: "Must input password" });
-    } else {
-
-      const newSession = await sessionRequest('POST', state.email, state.password);
-      if (!newSession.session) {
-        setState({ loginMessage: "The Email or Password is incorrect." });
-      } else {
-        appState.rememberMe = state.rememberYou;
-        appState.email = state.email;
-        appState.password = state.password;
-        appState.userToken = newSession.session.token;
-        history.push('/');
-      }
+  function submitAction(data, event) {
+    if (checkLogin(data, event, state.rememberMe)) {
+      setError("invalid", "invalidLogin", "The Email or password is invalid.");
     }
-  }
-
+  };
 
   return (
     <div>
@@ -69,10 +37,24 @@ function Login(props) {
             <div className={styles.loginForm}>
               <div className={styles.blueLetters}>Login</div>
               <div></div>
-              <form onSubmit={checkLogin}>
-                <input type="email" className="{styles.formElement}" placeholder="Email" value={state.email} onChange={onInputChange('email')} />
-                <input type="password" className="{styles.formElement}" placeholder="Password" value={state.password} onChange={onInputChange('password')} />
-                <div className={styles.loginMessage}>{state.loginMessage}</div>
+              <form onSubmit={handleSubmit(submitAction)}>
+
+                <input type="email" className="{styles.formElement}" placeholder="Email" name="email" defaultValue={appState.user.email}
+                  ref={register({
+                    required: true,
+                    pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                  })} />
+                {errors.email && <div className={styles.errorMsg}>Must input valid Email.</div>}
+
+                <input type="password" className="{styles.formElement}" placeholder="Password" name="password"
+                  ref={register({
+                    required: true,
+                    minLength: 5,
+                    maxLength: 20
+                  })} />
+                {errors.password && <div className={styles.errorMsg}>Password must have more than 5 and less than 20 characters</div>}
+
+                {errors.invalid && <div className={styles.errorMsg}>{errors.invalid.message}</div>}
                 <span className={styles.alignCenter}><input type="checkbox" onChange={changeRememberance} />&nbsp;&nbsp;Remember Me</span>
                 <input className={styles.blueButton} type="submit" value="Login" />
                 <h5 className={styles.alignCenter}>Don't have an account?</h5>

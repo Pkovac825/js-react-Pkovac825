@@ -6,13 +6,19 @@ import { FlightBookingInfo } from '../components/FlightBookingInfo';
 import styles from './Flight.module.css'
 import { AppContext } from '../state/AppContext';
 import { loadFlights } from '../services/flights';
+import { action } from 'mobx';
 
 function FlightContainer(props) {
   const { appState } = React.useContext(AppContext);
+  const logout = action("logout", () => appState.userToken = '');
   useAsync(loadFlights.bind(null, appState, appState.userToken));
-  appState.queriedID = props.location.search.substring(1).split("=")[1];
-  const chosenFlight = appState.getFlightById;
 
+  React.useEffect(() => {
+    const changeQueried = action("infoQuery", () => appState.queriedID = props.match.params.id);
+    changeQueried();
+  }, [props.location.search]);
+
+  const chosenFlight = appState.getFlightById;
 
 
   return (<div>
@@ -21,8 +27,8 @@ function FlightContainer(props) {
         <div></div>
         :
         <div className={styles.pageGrid}>
-          <Header appState={appState} />
-          <FlightBookingInfo chosenFlight={chosenFlight[0]} history={props.history} />
+          <Header logout={logout} />
+          <FlightBookingInfo chosenFlight={chosenFlight[0]} openBookingModal={(flight) => props.history.push("/book/modal/" + flight.id)} />
         </div>
     }
   </div>

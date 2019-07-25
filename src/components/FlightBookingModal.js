@@ -2,10 +2,9 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import styles from './FlightBookingModal.module.css';
 import { useSetState } from 'react-use';
-import { bookFlight } from '../services/bookFlight';
 
 function FlightBookingModalContainer(props) {
-    const { flight, appState, history } = props;
+    const { flight, bookFlight } = props;
     const [state, setState] = useSetState({
         selectedNumber: 1,
         errorMsg: null,
@@ -15,24 +14,13 @@ function FlightBookingModalContainer(props) {
         setState({ selectedNumber: select.nativeEvent.target.selectedIndex + 1 });
     }
 
-    function book(e) {
-        e.preventDefault();
-        if(flight.no_of_seats - flight.no_of_booked_seats - state.selectedNumber >= 0) {
-            bookFlight(appState, appState.userToken, state.selectedNumber, flight.id);
-            history.push("/book?id=" + flight.id);
-        } else {
-            setState({ errorMsg: "The plane has only " + (flight.no_of_seats - flight.no_of_booked_seats) + " seats." });
-        }
-        
-    }
-
     return (<React.Fragment>
         {flight ?
             <div className={styles.modalContainer}>
                 <div className={styles.modalContent}>
                     <p className={styles.topText}>Create booking</p>
                     <p className={styles.smallText}>Number of passengers</p>
-                    <form onSubmit={book} onChange={changeSelected}>
+                    <form onSubmit={(e) => bookFlight(e, flight, state, setState)} onChange={changeSelected}>
                         <select className={styles.dropbtn} name="booking" defaultValue="defOpt" onChange={changeSelected}>
                             <option className={styles.dropdownContent} key="1" value="1" onSelect={changeSelected}>1</option>
                             <option className={styles.dropdownContent} key="2" value="2">2</option>

@@ -16,6 +16,11 @@
 
 }
 
+.errorMsg {
+  color:  rgb(180, 52, 35);
+  text-align: center;
+}
+
 form {
   display: grid;
   grid-template-columns: 1fr;

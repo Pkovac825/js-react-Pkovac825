@@ -35,6 +35,11 @@ input {
   border-width: 2px;
 }
 
+.errorMsg {
+  color:  rgb(180, 52, 35);
+  text-align: center;
+}
+
 .blueLetters {
   color: #194CBF;
   text-align: center;

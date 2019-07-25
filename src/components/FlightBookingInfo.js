@@ -4,13 +4,9 @@ import styles from './FlightBookingInfo.module.css';
 
 
 function FlightBookingComponent(props) {
-    const { chosenFlight } = props;
-    const flyDate = chosenFlight.flys_at.trim();
-    const landDate = chosenFlight.lands_at.trim();
-
-    function bookFlight() {
-      props.history.push("/book/modal?id=" + chosenFlight.id);
-    }
+    const { chosenFlight, openBookingModal } = props;
+    const flyDate = React.useMemo(() => chosenFlight.flys_at.trim(), chosenFlight);
+    const landDate = React.useMemo(() => chosenFlight.lands_at.trim(), chosenFlight);
 
     return (
         <div className={styles.main}>
@@ -58,7 +54,7 @@ function FlightBookingComponent(props) {
           <span className={styles.grayLetters}><span role="img" aria-label="food">🍴</span>  Meals Included</span>
         </div>
 
-        <button className={styles.bookButton} onClick={bookFlight}>Book Now</button>
+        <button className={styles.bookButton} onClick={(e) => openBookingModal(chosenFlight)}>Book Now</button>
 
         <img className={styles.picture} src="http://placecorgi.com/450/300" width="650" height="550" alt="That's a pretty sweet Corgi." />
 

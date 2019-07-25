@@ -5,16 +5,8 @@ export function loadFlights(appState, serverToken) {
   if(appState.flights.length) {
     return Promise.resolve(appState.flights);
   }
-  
-    const optionsFlight = {
-        method: 'GET',
-        headers: {
-          'Authorization': serverToken,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
-      };
-    return get('flights', optionsFlight)
+
+    return get('flights', serverToken)
       .then((response) => response.flights)
       .then((flights) => (appState.flights = flights));
   }

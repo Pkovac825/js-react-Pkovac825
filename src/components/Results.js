@@ -16,7 +16,7 @@ function ResultsComponent(props) {
             <div className={styles.flightInfo}>
                 {
                     responseFlights.map((flight) => (
-                        <OneFlightInfo flight={flight} key={flight.id}/>
+                        <OneFlightInfo flight={flight} key={flight.id} toBooking={props.toBooking}/>
                     ))
                 }
             </div>

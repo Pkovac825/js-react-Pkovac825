@@ -6,6 +6,7 @@
     "mobx-react": "^6.1.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-hook-form": "^3.18.13",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "react-use": "^9.8.1",

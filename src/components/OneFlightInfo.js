@@ -14,7 +14,7 @@ function FlightInfoComponent(props) {
                 <option value={flight.id}>Book</option>
                 <option value={flight.id}>Add to wishlist</option>
             </select>
-            <Link to={"/book?id=" + flight.id}><img src="http://placecorgi.com/400/300" width="400" height="350" alt="That's a pretty sweet Corgi." /></Link>
+            <Link to={"/book/" + flight.id}><img src="http://placecorgi.com/400/300" width="400" height="350" alt="That's a pretty sweet Corgi." /></Link>
             <div className={styles.desc}>
                 <h4>Departs at {flight.flys_at.split("T")[1].substring(0, 5)}</h4>
                 <p>{flight.company_name}</p>
