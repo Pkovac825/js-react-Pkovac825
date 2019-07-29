@@ -1,0 +1,14 @@
+.pageGrid {
+    display: grid;
+    align-content: left;
+    background-color: whitesmoke;
+    font-family: Arial, Helvetica, sans-serif;
+    grid-template-rows: 1fr, 1fr, 1fr;
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+      "userProfile"
+      "userBookings"
+      "userWishlist";
+      
+  }
+  

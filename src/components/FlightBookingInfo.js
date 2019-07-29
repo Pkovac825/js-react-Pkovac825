@@ -1,27 +1,15 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { userState } from '../state/UserState';
-import styles from './ShowFlight.module.css';
+import styles from './FlightBookingInfo.module.css';
 
-function ShowFlightContainer(props) {
-  const chosenFlight = props.chosenFlight[0];
-  const flyDate = chosenFlight.flys_at.trim();
-  const landDate = chosenFlight.lands_at.trim();
 
-  function logout() {
-    userState.userToken = '';
-  }
+function FlightBookingComponent(props) {
+    const { chosenFlight, openBookingModal } = props;
+    const flyDate = React.useMemo(() => chosenFlight.flys_at.trim(), [chosenFlight]);
+    const landDate = React.useMemo(() => chosenFlight.lands_at.trim(), [chosenFlight]);
 
-  return (
-
-    <div className={styles.pageGrid}>
-      <div className={styles.header}>
-        <div>
-          <a href="/"><button className={styles.headerButton} onClick={logout}>Logout</button></a>
-        </div>
-      </div>
-
-      <div className={styles.main}>
+    return (
+        <div className={styles.main}>
         <div className={styles.topText}>{chosenFlight.name}</div>
 
         <div className={styles.infoGrid}>
@@ -31,7 +19,7 @@ function ShowFlightContainer(props) {
           </div>
           <div className={styles.infoGridElement}>
             <p>Available Seats:</p>
-            <p className={styles.grayLetters}>&nbsp;&nbsp;&nbsp;&nbsp;{chosenFlight.no_of_seats}</p>
+            <p className={styles.grayLetters}>&nbsp;&nbsp;&nbsp;&nbsp;{chosenFlight.no_of_seats - chosenFlight.no_of_booked_seats}</p>
           </div>
 
           <div className={styles.infoGridElement}>
@@ -66,14 +54,12 @@ function ShowFlightContainer(props) {
           <span className={styles.grayLetters}><span role="img" aria-label="food">🍴</span>  Meals Included</span>
         </div>
 
-        <button className={styles.bookButton}>Book Now</button>
+        <button className={styles.bookButton} onClick={(e) => openBookingModal(chosenFlight)}>Book Now</button>
 
         <img className={styles.picture} src="http://placecorgi.com/450/300" width="650" height="550" alt="That's a pretty sweet Corgi." />
 
       </div>
-    </div>
-  );
+    )
 }
 
-export const ShowFlight = observer(ShowFlightContainer);
-
+export const FlightBookingInfo = observer(FlightBookingComponent);

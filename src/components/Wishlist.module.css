@@ -1,0 +1,31 @@
+.main {
+    grid-area: userWishlist;
+    background-color: white;
+    box-shadow: 0px 3px 4px 3px rgba(0,0,0,0.1); 
+    margin: 50px;
+    padding: 25px;
+}
+
+.bookingGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 50px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.bigText {
+    font-size: 40px;
+}
+
+.blueLink {
+    color: dodgerblue;
+    font-size: 30px;
+    font-weight: bold;
+  }
+
+.expandable {
+    float: right;
+    color: dodgerblue;
+    font-size: 20px;
+}

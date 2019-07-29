@@ -1,14 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
-import {Landing} from './containers/Landing';
-import {Login} from './components/Login';
-import {Flight} from './containers/Flight';
-import {Register} from './components/Register';
-import { userState } from './state/UserState';
 import { observer } from 'mobx-react';
+import { appState } from './state/AppState';
+import {Landing} from './containers/Landing';
+import {Login} from './containers/Login';
+import {Flight} from './containers/Flight';
+import {Register} from './containers/Register';
+import { Booking } from './containers/Booking';
+import { Profile } from './containers/Profile';
+import { UserEdit } from './containers/UserEdit';
 
-function PrivateRoute({ isLoggedIn, Component, ...rest }) {
+function PrivateRoute({ isLoggedIn, component: Component, ...rest }) {
   function render(props) {
     return isLoggedIn ? <Component {...props}  /> : <Redirect to="/login" />;
   }
@@ -17,18 +20,18 @@ function PrivateRoute({ isLoggedIn, Component, ...rest }) {
 }
 
 
-function App(props) {
-
+function App() {
   return (
     <Router >
-      <PrivateRoute isLoggedIn={Boolean(userState.userToken)} exact path="/" Component={Landing} />
-      <PrivateRoute isLoggedIn={Boolean(userState.userToken)} path="/book" Component={Flight}/>
-      <Route exact path="/login" component={Login } />
-      <Route exact path="/register" component={Register } />
+      <PrivateRoute isLoggedIn={Boolean(appState.userToken)} exact path="/" component={ Landing } />
+      <PrivateRoute isLoggedIn={Boolean(appState.userToken)} path="/book/:id" component={ Flight }/>
+      <PrivateRoute isLoggedIn={Boolean(appState.userToken)} exact path="/book/modal/:id" component={ Booking }/>
+      <PrivateRoute isLoggedIn={Boolean(appState.userToken)} path="/profile" component={ Profile }/>
+      <PrivateRoute isLoggedIn={Boolean(appState.userToken)} exact path="/profile/edit" component={ UserEdit }/>
+      <Route exact path="/login" component={ Login } />
+      <Route exact path="/register" component={ Register } />
     </Router>
   );
-
-  
 }
 
 const  MyApp = observer(App);

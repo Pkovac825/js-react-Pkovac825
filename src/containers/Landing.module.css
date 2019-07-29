@@ -1,0 +1,15 @@
+.pageGrid {
+  display: grid;
+  font-family: Arial, Helvetica, sans-serif;
+  grid-row-gap: 1px;
+  grid-template-rows: 100px 300px 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas: 
+    "header"
+    "search"
+    "main";
+}
+
+a, u {
+  text-decoration: none;
+}

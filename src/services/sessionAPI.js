@@ -1,18 +1,16 @@
-import { get } from './flightsAPI';
+import { post, del } from './api';
 
-export function sessionRequest(method, email, password) {
-    const optionsSession = {
-      method: method,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
+export function createSession(email, password) {
+    const body = JSON.stringify({
         "session": {
           "email": email,
           "password": password
         }
       })
-    };
-    return  get('session', optionsSession);
+    return post('session', '', body);
+  };
+
+
+  export function deleteSession(token) {
+    return del('session', token, '');
   };

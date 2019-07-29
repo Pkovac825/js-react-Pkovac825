@@ -16,6 +16,11 @@
 
 }
 
+.errorMsg {
+  color:  rgb(180, 52, 35);
+  text-align: center;
+}
+
 form {
   display: grid;
   grid-template-columns: 1fr;
@@ -33,11 +38,6 @@ input {
   color: black;
   font-size: 20px;
   border-width: 2px;
-}
-
-.errorMsg {
-  color:  rgb(180, 52, 35);
-  text-align: center;
 }
 
 .blueLetters {

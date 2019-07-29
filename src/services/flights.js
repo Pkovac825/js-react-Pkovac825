@@ -1,16 +1,12 @@
-import { get } from './flightsAPI';
+import { get } from './api';
 
 export function loadFlights(appState, serverToken) {
   if(!serverToken) return;
-    const optionsFlight = {
-        method: 'GET',
-        headers: {
-          'Authorization': serverToken,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
-      };
-    return get('flights', optionsFlight)
+  if(appState.flights.length) {
+    return Promise.resolve(appState.flights);
+  }
+
+    return get('flights', serverToken)
       .then((response) => response.flights)
       .then((flights) => (appState.flights = flights));
   }
