@@ -5,7 +5,7 @@ export function uploadImage(image, appState) {
     return fetch('https://isa-js-upload.andreicek.dev/upload', {
       method: 'POST',
       headers: {
-        Authorization: 'EToCrsBQA2fkGPi3E51mqLaD',
+        Authorization: appState.userToken,
       },
       body,
     }).then((response) => response.json())

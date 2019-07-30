@@ -1,6 +1,6 @@
 import { post } from './api';
 
-export function bookFlight(appState, serverToken, noOfSeats, flightID) {
+export function bookFlight(serverToken, noOfSeats, flightID) {
   if(!serverToken) return;
   
     const body = JSON.stringify({

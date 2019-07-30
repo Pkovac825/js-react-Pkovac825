@@ -1,8 +1,8 @@
-export function get(model, Authorization, body) {
+export function get(model, authorization, body) {
   const getOptions = {
     method: 'GET',
     headers: {
-      Authorization,
+      'Authorization': authorization,
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
@@ -12,11 +12,11 @@ export function get(model, Authorization, body) {
       .then((response) => response.json());
   }
 
-export function post(model, Authorization, body) {
+export function post(model, authorization, body) {
   const postOptions = {
     method: 'POST',
     headers: {
-      Authorization,
+      'Authorization': authorization,
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
@@ -26,11 +26,11 @@ export function post(model, Authorization, body) {
     .then((response) => response.json());
 }
 
-export function put(model, Authorization, body) {
+export function put(model, authorization, body) {
   const putOptions = {
     method: 'PUT',
     headers: {
-      Authorization,
+      'Authorization': authorization,
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
@@ -40,11 +40,11 @@ export function put(model, Authorization, body) {
     .then((response) => response.json());
 }
 
-export function del(model, Authorization, body) {
+export function remove(model, authorization, body) {
   const deleteOptions = {
     method: 'DELETE',
     headers: {
-      Authorization,
+      'Authorization': authorization,
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },

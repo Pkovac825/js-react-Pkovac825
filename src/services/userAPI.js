@@ -17,7 +17,6 @@ export function createUser(email, fname, lname, password) {
     return get('users/' + id, token)
               .then(user => user.user)
               .then(user => {
-                console.log(user);
                 appState.user.firstName = user.first_name;
                 appState.user.lastName = user.last_name;
                 appState.user.bookings = user.bookings;

@@ -4,6 +4,7 @@ import styles from './UserEditModal.module.css';
 import useForm from 'react-hook-form';
 import { useDropzone } from 'react-dropzone'
 import { useSetState } from 'react-use';
+import { Link } from 'react-router-dom';
 
 function UserEditModalContainer(props) {
     const [state, setState] = useSetState({
@@ -11,13 +12,11 @@ function UserEditModalContainer(props) {
     });
     const { email, username, checkEdit, editError } = props;
     const { register, handleSubmit, errors } = useForm();
-
+    const pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     function accept(acceptedFiles) {
         setState({
-            files: acceptedFiles.map(file => Object.assign(file, {
-                preview: URL.createObjectURL(file)
-            }))
+            files: acceptedFiles.map(file => Object.assign(file, {preview: URL.createObjectURL(file)}))
         });
       }
 
@@ -25,7 +24,6 @@ function UserEditModalContainer(props) {
         accept: 'image/*',
         onDrop: accept,
     });
-    const pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     function submitAction(data, event) {
         event.preventDefault();
@@ -37,6 +35,7 @@ function UserEditModalContainer(props) {
         <>
             <div className={styles.modalContainer}>
                 <div className={styles.modalContent}>
+                <Link className={styles.closeText} to="/profile">Cancel</Link>
                     <p className={styles.topText}>Edit Profile</p>
                     <div {...getRootProps()} className={styles.dropzone}>
                         <input {...getInputProps()} />

@@ -5,13 +5,11 @@ import useForm from 'react-hook-form';
 
 function Register(props) {
   const { register, handleSubmit, errors, setError } = useForm();
-  const { onRegisterSubmit } = props;
+  const { onRegisterSubmit, registerError } = props;
 
   function registerAction(data, event) {
     if(data.password === data.checkPassword) {
-      if(onRegisterSubmit(data, event)) {
-        setError("invalid", "invalidRegister", "A user with this Email already exists.");
-      }
+      onRegisterSubmit(data, event);
     } else {
       setError("checkPassword", "invalidRegister", "Passwords must match!");
     }
@@ -55,6 +53,7 @@ function Register(props) {
                   maxLength: 20
                 })}/>
           {errors.checkPassword && <div className={styles.errorMsg}>{errors.checkPassword.message}</div>}
+          {registerError && <div className={styles.errorMsg}>{registerError}</div>}
           <input className={styles.blueButton} type="submit" value="Register" />
         </form>
       </div>

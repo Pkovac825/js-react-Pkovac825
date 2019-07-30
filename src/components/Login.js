@@ -7,7 +7,7 @@ import useForm from 'react-hook-form';
 
 function Login(props) {
   const { register, handleSubmit, errors } = useForm();
-  const { checkLogin, appState, loginError } = props;
+  const { onLogin, appState, loginError } = props;
   const pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const [state, setState] = useSetState({
     rememberMe: appState.user.rememberMe === "true",
@@ -18,7 +18,7 @@ function Login(props) {
   }
 
   function submitAction(data, event) {
-     checkLogin(data, event, state.rememberMe);
+     onLogin(data, event, state.rememberMe);
   };
 
   return (

@@ -8,7 +8,11 @@ function FlightInfoComponent(props) {
 
     function changeSelected(select) {
         const index = select.nativeEvent.target.selectedIndex - 1;
-        index ? ((flight.name.split("-").length > 1) && addToWishlist(flight.name.split("-")[1].trim())) : book(flight.id);
+        if(index) {
+            (flight.name.split("-").length > 1) && addToWishlist(flight.name.split("-")[1].trim())
+        } else {
+            book(flight.id)
+        }
     }
 
     return (
@@ -18,7 +22,7 @@ function FlightInfoComponent(props) {
                 <option value={flight.id}>Book</option>
                 <option value={flight.id}>Add to wishlist</option>
             </select>
-            <Link to={"/book/" + flight.id}><img src="http://placekitten.com/400/300" width="400" height="350" alt="That's a pretty sweet Corgi." /></Link>
+            <Link to={"/book/" + flight.id}><img src="http://placegoat.com/400/300" width="400" height="350" alt="That's a pretty sweet goat." /></Link>
             <div className={styles.desc}>
                 <h4>Departs at {flight.flys_at.split("T")[1].substring(0, 5)}</h4>
                 <p>{flight.company_name}</p>

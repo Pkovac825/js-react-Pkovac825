@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import styles from './FlightBookingModal.module.css';
 import { useSetState } from 'react-use';
+import { Link } from 'react-router-dom';
 
 function FlightBookingModalContainer(props) {
     const { flight, bookFlight } = props;
@@ -18,6 +19,7 @@ function FlightBookingModalContainer(props) {
         {flight ?
             <div className={styles.modalContainer}>
                 <div className={styles.modalContent}>
+                <Link className={styles.closeText} to={"/book/" + flight.id}>Close</Link>
                     <p className={styles.topText}>Create booking</p>
                     <p className={styles.smallText}>Number of passengers</p>
                     <form onSubmit={(e) => bookFlight(e, flight, state, setState)} onChange={changeSelected}>
@@ -29,7 +31,6 @@ function FlightBookingModalContainer(props) {
                         </select>
                         {state.errorMsg && <div className={styles.errorText}>{state.errorMsg}</div>}
                         <input className={styles.searchButton} type="submit" name="SUBMITBUTTON" value="Confirm booking"/>
-                        
                     </form>
 
                 </div>

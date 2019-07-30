@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import styles from './UserInfo.module.css';
+import { Link } from 'react-router-dom';
 
 function UserInfoComponent(props) {
     const { firstName, lastName, email } = props;
@@ -9,12 +10,12 @@ function UserInfoComponent(props) {
     return (
         <div className={styles.main}>
              
-            <img src={imageurl} className={styles.userImage} />
+            <img src={imageurl}  width="300" height="250"/>
             <div className={styles.info}>
                 <label className={styles.name}>{firstName} {lastName}</label>
                 <div className={styles.email}>{email}</div>
                 <div></div>
-                <a className={styles.edit} href="/profile/edit">Edit</a>
+                <Link className={styles.edit} to="/profile/edit">Edit</Link>
             </div>
 
         </div>

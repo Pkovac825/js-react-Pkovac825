@@ -12,12 +12,13 @@
   }
   
   .modalContent {
-    height: 400px;
+    height: 450px;
     max-height: 100%;
-    width: 250px;
+    width: 350px;
     padding-left: 100px;
     padding-right: 100px;
     background-color: white;
+    overflow-y: auto;
   }
 
   .topText {
@@ -92,4 +93,14 @@
     width: 250px;
     min-height: 60px;
     font-size: 20px;
+  }
+
+  .closeText {
+    grid-area: topText;
+    color: #194CBF;
+    font-size: 20px;
+    text-align: left;
+    padding-top: 20px;
+    display: flex;
+    justify-content: left;
   }

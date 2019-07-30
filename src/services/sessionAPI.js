@@ -1,4 +1,4 @@
-import { post, del } from './api';
+import { post, remove } from './api';
 
 export function createSession(email, password) {
     const body = JSON.stringify({
@@ -12,5 +12,5 @@ export function createSession(email, password) {
 
 
   export function deleteSession(token) {
-    return del('session', token, '');
+    return remove('session', token, '');
   };

@@ -19,7 +19,7 @@ function LoginContainer(props) {
     appState.userToken = token;
   });
 
-  async function checkLogin(data, event, rememberMe) {
+  async function onLogin(data, event, rememberMe) {
     event.preventDefault();
     const newSession = await createSession(data.email, data.password);
     if (!newSession.session) {
@@ -32,7 +32,7 @@ function LoginContainer(props) {
   }
 
   return (
-    <LoginComponent appState={appState} checkLogin={checkLogin} loginError={state.loginError} />
+    <LoginComponent appState={appState} onLogin={onLogin} loginError={state.loginError} />
   );
 }
 

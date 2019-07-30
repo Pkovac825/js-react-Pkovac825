@@ -12,11 +12,11 @@ function BookingsComponent(props) {
     });
 
     function showMore() {
-        state.itemsToShow === 4 ? (
+        if (state.itemsToShow === 4) {
             setState({ itemsToShow: bookings.length, expanded: true })
-        ) : (
-                setState({ itemsToShow: 4, expanded: false })
-            )
+        } else {
+            setState({ itemsToShow: 4, expanded: false })
+        }
     }
 
 

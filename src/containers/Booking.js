@@ -19,7 +19,7 @@ function BookingContainer(props) {
     function book(e, flight, state, setState) {
       e.preventDefault();
       if(flight.no_of_seats - flight.no_of_booked_seats - state.selectedNumber >= 0) {
-          bookFlight(appState, appState.userToken, state.selectedNumber, flight.id);
+          bookFlight(appState.userToken, state.selectedNumber, flight.id);
           props.history.push("/book/" + flight.id);
       } else {
           setState({ errorMsg: "The plane has only " + (flight.no_of_seats - flight.no_of_booked_seats) + " seats." });
