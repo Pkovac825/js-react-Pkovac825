@@ -1,0 +1,37 @@
+.header {
+    padding-right: 30px;
+    padding-left: 20px;
+    text-align: right;
+    height: 150px;
+    grid-area: header;
+    background-color: #0368F9;
+  }
+
+  .headerButton {
+    background-color: white;
+    border: none;
+    color: black;
+    padding: 5px;
+    min-width: 100px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    border-radius: 4px;
+    margin: 15px;
+  }
+
+  
+  .helloText {
+    color: white;
+    font-size: 25px;
+    margin-right: 30px;
+  }
+
+  .landingText {
+    color: white;
+    font-size: 25px;
+    float: left;
+    margin-top: 15px;
+  }
